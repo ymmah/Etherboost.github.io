@@ -1,0 +1,41 @@
+body {
+  width: 100%;
+}
+
+#content {
+  width: 100%;
+  margin-top: 1em;
+}
+
+#headline {
+  margin: 0 auto;
+  width: 800px;
+}
+
+#headline img {
+  width: 100%;
+}
+
+#details {
+  margin: 0 auto;
+  width: 800px;
+  text-align: center;
+  padding: 1em;
+  font-size: 2.5em;
+}
+
+#products {
+  margin: 0 auto;
+  width: 800px;
+  text-align: center;
+  font-size: 2em;
+}
+
+#products .product {
+  width: 400px;
+  float: left;
+}
+
+#products .product img {
+  width: 100px;
+}
