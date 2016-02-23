@@ -9,7 +9,7 @@ body {
 
 #headline {
   margin: 0 auto;
-  width: 800px;
+  width: 900px;
 }
 
 #headline img {
@@ -18,7 +18,7 @@ body {
 
 #details {
   margin: 0 auto;
-  width: 800px;
+  width: 900px;
   text-align: center;
   padding: 1em;
   font-size: 2.5em;
@@ -26,14 +26,24 @@ body {
 
 #products {
   margin: 0 auto;
-  width: 800px;
+  width: 900px;
   text-align: center;
   font-size: 2em;
 }
 
 #products .product {
-  width: 400px;
+  width: 300px;
   float: left;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-bottom: 1em;
+}
+
+#products .product .title {
+  margin-top: 1em;
+  font-weight: bold;
+}
+#products .product .description {
 }
 
 #products .product img {
