@@ -33,10 +33,15 @@ body {
 
 #products .product {
   width: 300px;
-  float: left;
+  /*float: left;*/
+  margin: 0 auto;
   padding-left: 1em;
   padding-right: 1em;
   margin-bottom: 1em;
+}
+
+#products a {
+  text-decoration: none;
 }
 
 #products .product .title {
