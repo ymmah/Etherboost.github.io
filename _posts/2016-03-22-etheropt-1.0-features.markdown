@@ -1,0 +1,33 @@
+---
+---
+We released the testnet version of [Etheropt](http://etheropt.github.io/testnet) last month on [reddit](https://www.reddit.com/r/ethereum/comments/47many/etheropt_a_decentralized_options_exchange_is/) and [Hacker News](https://news.ycombinator.com/item?id=11179371). Since then we've been furiously preparing to release Etheropt 1.0 on the mainnet. In case you missed it, Etheropt is a decentralized options exchange that runs in a smart contract on the Ethereum blockchain as a decentralized autonomous organization.
+
+## Vanilla call and put options
+
+In the version of Etheropt released last month, the options were binary calls. We originally chose binary options because their payoffs are limited. A binary call option settles at either 0 or 1. If you buy one for 0.25, you only need to hold 0.25 in your account as margin and the seller needs 0.75 as margin.
+
+In the world of centralized exchanges, vanilla call and put options are much more popular than binary options. They are more versatile as hedging instruments because of their payoff structures. We are happy to announce that in the new version of Etheropt, the options will be vanilla call and put options with a special margin feature to cap their payoffs. The margin cap represents the maximum intrinsic value of an option. For example, if the margin requirement for the ETH/USD 10 call expiring March 31 is 5, and you buy it for 1, then your maximum profit is 4 and the seller's maximum profit is 1, while your maximum loss is 1 and the seller's maximum loss is 4.
+
+## Offchain order book
+
+Another new feature we are quite excited about is the offchain order book. In the original version of Etheropt, it was necessary to send a transaction to the smart contract every time you wanted to place an order. In the smart contract, each option had an array that could hold a small order book of bids and offers. To limit gas consumption, we limited the order book to three bids and three offers. If a new order came in, it would have to improve one of the existing orders with a better price in order to be listed.
+
+In the new version of Etheropt, we are replacing the onchain order book with an offchain one. This means that placing an order does not require you to send a transaction to the smart contract. This also means that the order book can hold more than three bids and three offers. In fact, it can hold unlimited bids and offers. The only time you need to transact with the smart contract is when you need to actually cross a trade. For example, if someone shows an offer for an option, and you want to buy the offer, it's your responsibility to send a transaction to the smart contract so that the smart contract can record the trade.
+
+Since the maker (the party who listed the resting order) does not pay the gas cost and the taker (the party who traded with the resting order) does, the fee structure is similar to the maker/taker fee structure popular on many centralized exchanges, where the maker (who provides liquidity) pays a smaller fee or none at all. Note that the Etheropt smart contract itself still does not charge any fees -- not for trading, not for adding funds, not for withdrawing, not for anything. The fees we are talking about here are Ethereum transaction fees, also known as gas fees.
+
+The offchain transaction design pattern is one we at Etherboost intend to follow in future decentralized applications we'll be releasing on the Ethereum blockchain. The advantages of moving transactions offchain are great. By doing so, we reduce gas consumption and remove many unnecessary transactions and storage in the Ethereum blockchain.
+
+The implementation of this offchain order book is worth discussing. An order consists of an option, a price, a size, an order ID, an expiration block number, and a signed hash of these items. The smart contract will only match an order if the expiration block number has not passed, the signature is valid, the order has not already traded, and both parties have enough funds to cover the margin for the order. Note that the smart contract records partial fills, so multiple people can trade against an order.
+
+## The market maker role
+
+You might be wondering where the offchain order book resides. The new version of Etheropt introduces a market maker role. A market maker is responsible for making markets, listening for and storing resting orders, and running a small server to publish the current order book. The Etheropt smart contract allows for up to six market makers.
+
+Becoming a market maker is as simple as running a small JavaScript program with node.js. The program will make markets as wide as possible (the pricing strategy can be customized), run the order book server, and send a special transaction to the smart contract announcing the server's location. If there are already six market makers, then the transaction will only be accepted if the new market maker's balance exceeds that of the market maker with the lowest balance, in which case the new market maker will replace the one with the lowest balance.
+
+If you are not a market maker, transacting with Etheropt is as simple as going to [etheropt.github.io](http://etheropt.github.io) or downloading the GUI from [GitHub](https://github.com/etheropt/etheropt.github.io) and running it locally.
+
+## Release date
+
+The mainnet version of Etheropt will be released soon. The testnet version, which already includes all of the above features, can be found at [etheropt.github.io/testnet](http://etheropt.github.io/testnet). The mainnet one will soon be available at [etheropt.github.io](http://etheropt.github.io).

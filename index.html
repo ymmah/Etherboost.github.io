@@ -5,8 +5,8 @@ layout: home
 <table class="table table-bordered">
 {% for post in paginator.posts %}
   <tr>
-    <td><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></td>
-    <td><time>{{ post.date | date: '%B %d, %Y '}}</time></td>
+    <td class="blog-title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></td>
+    <td class="blog-date"><time>{{ post.date | date: '%B %d, %Y '}}</time></td>
   </tr>
 {% endfor %}
 </table>
