@@ -36,11 +36,11 @@ body {
 
 #products .product {
   width: 300px;
-  /*float: left;*/
+  float: left;
   margin: 0 auto;
   padding-left: 16px;
   padding-right: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 }
 
 #products a {
@@ -111,6 +111,7 @@ body {
   background: #f93;
   font-size: 32px;
   font-weight: bold;
+  clear: both;
 }
 
 .section-header span {
