@@ -31,3 +31,5 @@ If you are not a market maker, transacting with Etheropt is as simple as going t
 ## Release date
 
 The mainnet version of Etheropt will be released soon. The testnet version, which already includes all of the above features, can be found at [etheropt.github.io/testnet](http://etheropt.github.io/testnet). The mainnet one will soon be available at [etheropt.github.io](http://etheropt.github.io).
+
+UPDATE: The mainnet version is now live and available at [etheropt.github.io](http://etheropt.github.io).
