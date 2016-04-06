@@ -112,6 +112,7 @@ body {
   font-size: 32px;
   font-weight: bold;
   clear: both;
+  width: 100%;
 }
 
 .section-header span {
@@ -123,4 +124,20 @@ body {
 
 .blog-date {
   font-size: 24px;
+}
+
+#contacts {
+  margin: 0 auto;
+  width: 600px;
+  text-align: center;
+  font-size: 24px;
+  margin-top: 32px;
+}
+
+#contacts .contact {
+  width: 300px;
+  float: left;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-bottom: 16px;
 }

@@ -32,6 +32,7 @@ about_stub: >
 about_footer: true
 
 twitter_username: Etherboost
+slack_name: etherboost
 github_username: Etherboost
 
 favicon: true
