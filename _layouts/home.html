@@ -111,15 +111,33 @@
       <div class="section-header"><span>Get in touch</span></div>
       <div id="contacts">
         <div class="contact">
-          <a href="https://gitter.im/Etherboost/Etherboost.github.io" target="_blank">Gitter chat</a>
+          <a href="https://gitter.im/Etherboost/Etherboost.github.io" target="_blank"><img src="https://badges.gitter.im/etherboost/etherboost.github.io.svg" alt="Chat on Gitter" /></a>
         </div>
         <div class="contact">
-          <a href="https://twitter.com/{{ site.twitter_username }}" target="_blank">@Etherboost</a>
-        </div>
+          <script>
+          window.twttr = (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0],
+              t = window.twttr || {};
+            if (d.getElementById(id)) return t;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+
+            t._e = [];
+            t.ready = function(f) {
+              t._e.push(f);
+            };
+
+            return t;
+          }(document, "script", "twitter-wjs"));
+        </script>
+        <a class="twitter-follow-button" href="https://twitter.com/{{ site.twitter_username }}">Follow @{{ site.twitter_username }}</a>
       </div>
     </div>
-    {% if site.tracking_id %}
-        {% include analytics.html %}
-    {% endif %}
+  </div>
+  {% if site.tracking_id %}
+      {% include analytics.html %}
+  {% endif %}
   </body>
 </html>
