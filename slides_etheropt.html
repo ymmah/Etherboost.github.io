@@ -8,7 +8,7 @@
             <div class="slides">
                 <section>
                   <h1>Etheropt</h1>
-                  <img src="//etheropt.github.io/logo.png" style="border: 0;" />
+                  <img src="/images/etheropt_logo.svg" style="border: 0;" />
                 </section>
                 <section>
                   <h2>Who is Zack Coburn <br />(condensed version)</h2>
@@ -17,42 +17,105 @@
                   <p class="fragment">2015-present &#8212; entrepreneur</p>
                 </section>
                 <section>
-                  <img src="//etherboost.github.io/images/headline.svg" style="border: 0" />
-                  <p>Etherboost is a producer of decentralized autonomous organizations governed by smart contracts on the Ethereum blockchain.</p>
+                  <img src="/images/headline.svg" style="border: 0" />
+                  <p class="fragment">Etherboost is a producer of decentralized autonomous organizations governed by smart contracts on the Ethereum blockchain.</p>
                 </section>
                 <section data-background-color="#00ffff">
                   <h2>Etheropt</h2>
-                  <p>Decentralized options exchange</p>
-                  <p>Vanilla call and put options</p>
-                  <p>Underlying: ETH/USD</p>
-                  <p>Settled in ETH</p>
+                  <p class="fragment">Decentralized options exchange</p>
+                  <p class="fragment">Vanilla call and put options</p>
+                  <p class="fragment">Underlying: ETH/USD</p>
+                  <p class="fragment">Settled in ETH</p>
                 </section>
                 <section data-background-color="#ffff00">
                   <h2>Built on Ethereum</h2>
-                  <p>Executed by smart contracts</p>
-                  <p>No owner</p>
-                  <p>No fees</p>
+                  <p class="fragment">Executed by smart contracts</p>
+                  <p class="fragment">No owner</p>
+                  <p class="fragment">No fees</p>
+                </section>
+                <section data-background-color="#cccccc" data-background-image="/images/screenshot8.png" data-background-size="contain">
+                </section>
+                <section data-background-color="#ff00ff">
+                  <section>
+                    <h2>Hold on, what's an option</h2>
+                    <div class="fragment">
+                      <img src="//www.captaineconomics.fr/images/juillet2012/Call-Option.png" style="border:0" />
+                    </div>
+                  </section>
+                  <section>
+                    <img src="/images/screenshot9.png" style="border:0" />
+                  </section>
+                  <section>
+                    <img src="/images/screenshot10.png" style="border:0" />
+                  </section>
+                  <section>
+                    <img src="/images/screenshot11.png" style="border:0" />
+                  </section>
+                </section>
+                <section data-background-color="#ccff00">
+                  <h2>Smart contracts</h2>
+                  <p class="fragment">One smart contract per expiration</p>
+                  <p class="fragment">Anyone can make one</p>
+                  <p class="fragment">Separate smart contract keeps track of them</p>
+                </section>
+                <section data-background-color="#ff00cc">
+                  <h2>315 Lines of<br /> His Glorious Solidity</h2>
+                  <div class="fragment">
+                    <pre><code class="hljs" data-trim contenteditable>
+                      function Etheropt(uint expiration_, string underlying_, uint margin_, uint realityID_, bytes32 factHash_, address ethAddr_, int[] strikes_) {
+                        expiration = expiration_;
+                        underlying = underlying_;
+                        margin = margin_;
+                        realityID = realityID_;
+                        factHash = factHash_;
+                        ethAddr = ethAddr_;
+                        for (uint i=0; i < strikes_.length; i++) {
+                          if (numOptions<20) {
+                            uint optionID = numOptions++;
+                            options[optionID] = strikes_[i];
+                          }
+                        }
+                      }
+                    </code></pre>
+                  </div>
+                </section>
+                <section data-background-color="#00ccff">
+                  <h2>Major functions</h2>
+                  <p class="fragment">Etheropt() &#8212; initialization</p>
+                  <p class="fragment">addFunds(), withdrawFunds()</p>
+                  <p class="fragment">orderMatch()</p>
+                  <p class="fragment">expire()</p>
+                </section>
+                <section data-background-color="#00ffcc">
+                  <h2>Settlement prices</h2>
+                  <div class="fragment"><img src="https://pbs.twimg.com/profile_images/424711538667044864/B944M8k3_400x400.png" style="border: 0" /></div>
+                  <p class="fragment">Reality Keys is our Oracle</p>
+                  <p class="fragment">Cryptographically signed price at settlement</p>
+                </section>
+                <section data-background-color="#ffcc00">
+                  <h2>Order book</h2>
+                  <p class="fragment">Off chain</p>
+                  <p class="fragment">Decentralized &#8212; small server</p>
+                  <p class="fragment">Market make and profit!</p>
+                </section>
+                <section data-background-color="#cc00ff">
+                  <section>
+                    <h2>Market make from the browser</h2>
+                    <p class="fragment">For beginners</p>
+                    <p class="fragment">Draw your own PDF</p>
+                    <p class="fragment">We need you!</p>
+                  </section>
+                  <section data-background-color="#cccccc" data-background-image="/images/screenshot6.png" data-background-size="contain">
+                  </section>
                 </section>
                 <section>
-                  <img src="//etherboost.github.io/images/screenshot8.png" />
+                  <h2>Future</h2>
+                  <p class="fragment">Settlement in stablecoin</p>
+                  <p class="fragment">Other symbols</p>
+                  <p class="fragment">More liquidity</p>
                 </section>
                 <section>
-                  <pre><code class="hljs" data-trim contenteditable>
-        function linkify( selector ) {
-          if( supports3DTransforms ) {
-
-            var nodes = document.querySelectorAll( selector );
-
-            for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-              var node = nodes[i];
-
-              if( !node.className ) {
-                node.className += ' roll';
-              }
-            }
-          }
-        }
-        					</code></pre>
+                  <h2>Questions / live demo</h2>
                 </section>
             </div>
         </div>
