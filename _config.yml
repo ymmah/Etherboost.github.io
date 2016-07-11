@@ -12,7 +12,7 @@ author: Etherboost
 # This description will show up in google search results
 # (for index page) etc.
 description: >
-    Etherboost is a producer of decentralized autonomous organizations governed by smart contracts on the Ethereum blockchain.
+    Etherboost makes decentralized trading applications.
 
 # This will what will show against &copy; in the footer
 copyright: Etherboost
@@ -27,8 +27,8 @@ comments: true
 # Note that about_footer should be true if you want
 # to see author information at the bottom of each post
 about_stub: >
-    Etherboost is a producer of decentralized autonomous organizations governed by smart contracts on the Ethereum blockchain.
-
+    Etherboost makes decentralized trading applications.
+    
 about_footer: true
 
 twitter_username: Etherboost
