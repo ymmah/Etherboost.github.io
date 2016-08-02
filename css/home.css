@@ -37,11 +37,6 @@ body, html {
 }
 
 #products .product {
-  width: 300px;
-  float: left;
-  margin: 0 auto;
-  padding-left: 16px;
-  padding-right: 16px;
   margin-bottom: 32px;
 }
 
