@@ -2,11 +2,23 @@
 layout: home
 ---
 
-<table class="table table-bordered">
-{% for post in paginator.posts %}
-  <tr>
-    <td class="blog-title"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></td>
-    <td class="blog-date"><time>{{ post.date | date: '%B %d, %Y '}}</time></td>
-  </tr>
-{% endfor %}
-</table>
+<div class="list-group">
+  {% for post in paginator.posts limit:1 %}
+  <a href="{{ post.url | prepend: site.baseurl }}" class="list-group-item active">
+    <h4 class="list-group-item-heading">{{ post.title }}</h4>
+    <p class="list-group-item-text">
+      {{ post.date | date: '%B %d, %Y '}}
+      {{ post.content | strip_html | truncatewords:10}}
+    </p>
+  </a>
+  {% endfor %}
+  {% for post in paginator.posts limit:10 offset:1 %}
+  <a href="{{ post.url | prepend: site.baseurl }}" class="list-group-item">
+    <h4 class="list-group-item-heading">{{ post.title }}</h4>
+    <p class="list-group-item-text">
+      {{ post.date | date: '%B %d, %Y '}}
+      {{ post.content | strip_html | truncatewords:10}}
+    </p>
+  </a>
+  {% endfor %}
+</div>
