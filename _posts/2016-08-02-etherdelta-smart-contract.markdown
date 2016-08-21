@@ -1,5 +1,8 @@
 ---
 ---
+
+**Last updated August 21, 2016: added `cancelOrder()` function and `SafeMath` logic.**
+
 We announced [EtherDelta](https://etherdelta.github.io) on Reddit a few weeks ago, and we saw some DAO trading volume leading up to the hardfork. In case you missed it, EtherDelta is a decentralized exchange for Ether and Ethereum tokens. It's the second major release for Etherboost, following in the footsteps of [Etheropt](https://etheropt.github.io), the decentralized options exchange. We have a pretty exciting announcement coming just around the corner, but that's for another post. In this post, we want to go over some of the technical details of EtherDelta.
 
 ## High level overview
@@ -18,7 +21,7 @@ The primary benefit of storing resting orders off-chain is that you don't have t
 
 Now that we've gone through the high-level overview, let's look at the smart contract source code, which you can find [on GitHub](https://github.com/etherdelta/etherdelta.github.io/blob/master/etherdelta.sol).
 
-The first hundred or so lines implement an ERC-20 token that is used by the test framework. Skip to the EtherDelta contract:
+The first 30 or so lines define `SafeMath` functions that can be used to do addition, subtraction, or multiplication and throw an error in the event of an integer overflow. The next hundred or so lines implement an ERC-20 token that is used by the test framework. Skip to the EtherDelta contract:
 
 <pre><code>
 contract EtherDelta {
@@ -58,14 +61,14 @@ Next, we have the constructor and the default function. The constructor simply i
 
 <pre><code>
 function deposit() {
-	tokens[0][msg.sender] += msg.value;
+	tokens[0][msg.sender] = safeAdd(tokens[0][msg.sender], msg.value);
 	Deposit(0, msg.sender, msg.value, tokens[0][msg.sender]);
 }
 
 function withdraw(uint amount) {
 	if (msg.value>0) throw;
 	if (tokens[0][msg.sender] < amount) throw;
-	tokens[0][msg.sender] -= amount;
+	tokens[0][msg.sender] = safeSub(tokens[0][msg.sender], amount);
 	if (!msg.sender.call.value(amount)()) throw;
 	Withdraw(0, msg.sender, amount, tokens[0][msg.sender]);
 }
@@ -78,14 +81,14 @@ function depositToken(address token, uint amount) {
 	//remember to call Token(address).approve(this, amount) or this contract will not be able to do the transfer on your behalf.
 	if (msg.value>0 || token==0) throw;
 	if (!Token(token).transferFrom(msg.sender, this, amount)) throw;
-	tokens[token][msg.sender] += amount;
+	tokens[token][msg.sender] = safeAdd(tokens[token][msg.sender], amount);
 	Deposit(token, msg.sender, amount, tokens[token][msg.sender]);
 }
 
 function withdrawToken(address token, uint amount) {
 	if (msg.value>0 || token==0) throw;
 	if (tokens[token][msg.sender] < amount) throw;
-	tokens[token][msg.sender] -= amount;
+	tokens[token][msg.sender] = safeSub(tokens[token][msg.sender], amount);
 	if (!Token(token).transfer(msg.sender, amount)) throw;
 	Withdraw(token, msg.sender, amount, tokens[token][msg.sender]);
 }
@@ -126,17 +129,17 @@ function trade(address tokenGet, uint amountGet, address tokenGive, uint amountG
 	if (!(
 		ecrecover(hash,v,r,s) == user &&
 		block.number <= expires &&
-		orderFills[hash] + amount <= amountGet &&
+		safeAdd(orderFills[hash], amount) <= amountGet &&
 		tokens[tokenGet][msg.sender] >= amount &&
-		tokens[tokenGive][user] >= amountGive * amount / amountGet
+		tokens[tokenGive][user] >= safeMul(amountGive, amount) / amountGet
 	)) throw;
-	tokens[tokenGet][msg.sender] -= amount;
-	tokens[tokenGet][user] += amount * ((1 ether) - feeMake) / (1 ether);
-	tokens[tokenGet][feeAccount] += amount * feeMake / (1 ether);
-	tokens[tokenGive][user] -= amountGive * amount / amountGet;
-	tokens[tokenGive][msg.sender] += ((1 ether) - feeTake) * amountGive * amount / amountGet / (1 ether);
-	tokens[tokenGive][feeAccount] += feeTake * amountGive * amount / amountGet / (1 ether);
-	orderFills[hash] += amount;
+	tokens[tokenGet][msg.sender] = safeSub(tokens[tokenGet][msg.sender], amount);
+	tokens[tokenGet][user] = safeAdd(tokens[tokenGet][user], safeMul(amount, ((1 ether) - feeMake)) / (1 ether));
+	tokens[tokenGet][feeAccount] = safeAdd(tokens[tokenGet][feeAccount], safeMul(amount, feeMake) / (1 ether));
+	tokens[tokenGive][user] = safeSub(tokens[tokenGive][user], safeMul(amountGive, amount) / amountGet);
+	tokens[tokenGive][msg.sender] = safeAdd(tokens[tokenGive][msg.sender], safeMul(safeMul(((1 ether) - feeTake), amountGive), amount) / amountGet / (1 ether));
+	tokens[tokenGive][feeAccount] = safeAdd(tokens[tokenGive][feeAccount], safeMul(safeMul(feeTake, amountGive), amount) / amountGet / (1 ether));
+	orderFills[hash] = safeAdd(orderFills[hash], amount);
 	Trade(tokenGet, amount, tokenGive, amountGive * amount / amountGet, user, msg.sender);
 }
 </code></pre>
@@ -152,14 +155,26 @@ function availableVolume(address tokenGet, uint amountGet, address tokenGive, ui
 		ecrecover(hash,v,r,s) == user &&
 		block.number <= expires
 	)) return 0;
-	uint available1 = amountGet - orderFills[hash];
-	uint available2 = tokens[tokenGive][user] * amountGet / amountGive;
+	uint available1 = safeSub(amountGet, orderFills[hash]);
+	uint available2 = safeMul(tokens[tokenGive][user], amountGet) / amountGive;
 	if (available1<available2) return available1;
 	return available2;
 }
 </code></pre>
 
-The last function is `availableVolume`, which is a helper function for checking how much volume is available on an order, taking into account the amount that has been filled so far and the funds available in the user's account.
+The `availableVolume` function is a helper function for checking how much volume is available on an order, taking into account the amount that has been filled so far and the funds available in the user's account.
+
+<pre><code>
+function cancelOrder(address tokenGet, uint amountGet, address tokenGive, uint amountGive, uint expires, uint nonce, address user, uint8 v, bytes32 r, bytes32 s) {
+	if (msg.value>0) throw;
+	bytes32 hash = sha256(tokenGet, amountGet, tokenGive, amountGive, expires, nonce);
+	if (user!=msg.sender) throw;
+	orderFills[hash] = amountGet;
+	Cancel(tokenGet, amountGet, tokenGive, amountGive, expires, nonce, msg.sender, v, r, s);
+}
+</code></pre>
+
+The last function, `cancelOrder,` lets the owner of an order cancel it before it expires by maxing out the `orderFills` variable.
 
 ## Conclusion
 
