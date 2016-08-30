@@ -165,10 +165,10 @@ function availableVolume(address tokenGet, uint amountGet, address tokenGive, ui
 The `availableVolume` function is a helper function for checking how much volume is available on an order, taking into account the amount that has been filled so far and the funds available in the user's account.
 
 <pre><code>
-function cancelOrder(address tokenGet, uint amountGet, address tokenGive, uint amountGive, uint expires, uint nonce, address user, uint8 v, bytes32 r, bytes32 s) {
+function cancelOrder(address tokenGet, uint amountGet, address tokenGive, uint amountGive, uint expires, uint nonce, uint8 v, bytes32 r, bytes32 s) {
 	if (msg.value>0) throw;
 	bytes32 hash = sha256(tokenGet, amountGet, tokenGive, amountGive, expires, nonce);
-	if (user!=msg.sender) throw;
+	if (ecrecover(hash,v,r,s) != msg.sender) throw;
 	orderFills[hash] = amountGet;
 	Cancel(tokenGet, amountGet, tokenGive, amountGive, expires, nonce, msg.sender, v, r, s);
 }
