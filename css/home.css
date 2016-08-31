@@ -85,13 +85,14 @@ body, html {
 
 .person {
   float: left;
+  margin-bottom: 10px;
 }
 .person:not(:last-child) {
   margin-right: 10px;
 }
 
 .person img {
-  width: 135px;
+  width: 130px;
 }
 
 .product img {
