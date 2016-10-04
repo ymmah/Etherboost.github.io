@@ -19,7 +19,7 @@ The primary benefit of storing resting orders off-chain is that you don't have t
 
 ## Smart contract
 
-Now that we've gone through the high-level overview, let's look at the smart contract source code, which you can find [on GitHub](https://github.com/etherdelta/etherdelta.github.io/blob/master/etherdelta.sol).
+Now that we've gone through the high-level overview, let's look at the smart contract source code, which you can find [on GitHub](https://github.com/etherdelta/etherdelta.github.io/blob/master/etherdelta_current.sol).
 
 The first 30 or so lines define `SafeMath` functions that can be used to do addition, subtraction, or multiplication and throw an error in the event of an integer overflow. The next hundred or so lines implement an ERC-20 token that is used by the test framework. Skip to the EtherDelta contract:
 
