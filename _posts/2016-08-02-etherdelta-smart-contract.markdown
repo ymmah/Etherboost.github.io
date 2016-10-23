@@ -1,7 +1,7 @@
 ---
 ---
 
-**Last updated August 30, 2016**
+**This blog post is no longer up to date. Please find the latest version of the smart contract overview on [EtherDelta](https://etherdelta.github.io).**
 
 We announced [EtherDelta](https://etherdelta.github.io) on Reddit a few weeks ago, and we saw some DAO trading volume leading up to the hardfork. In case you missed it, EtherDelta is a decentralized exchange for Ether and Ethereum tokens. It's the second major release for Etherboost, following in the footsteps of [Etheropt](https://etheropt.github.io), the decentralized options exchange. We have a pretty exciting announcement coming just around the corner, but that's for another post. In this post, we want to go over some of the technical details of EtherDelta.
 
